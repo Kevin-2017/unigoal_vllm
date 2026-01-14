@@ -68,7 +68,13 @@ map_size_cm: 3600
 map_resolution: 5
 
 # LLM and VLM
-llm_model: "llama3.2-vision"
-vlm_model: "llama3.2-vision"
-api_key: "ollama"
-base_url: "http://localhost:11434/v1/"
+# llm_model: "llama3.2-vision"
+# vlm_model: "llama3.2-vision"
+# api_key: "ollama"
+# base_url: "http://localhost:11434/v1/"
+
+# VLLM
+llm_model: "/workspace/models/Qwen3-VL-8B-Instruct-FP8"
+vlm_model: "/workspace/models/Qwen3-VL-8B-Instruct-FP8"
+api_key: "llava"
+base_url: "http://localhost:8001/v1/"
