@@ -1,6 +1,9 @@
+# Pin numpy first to prevent version conflicts (numpy 1.24.4 is required for habitat-sim)
+numpy==1.24.4
+
 omegaconf
 hydra-core
-gym
+gym==0.26.2  # Last version before numpy 2.0 issues
 scikit-image
 scikit-fmm
 scikit-learn
@@ -8,5 +11,9 @@ pslpython
 openai
 grakel
 open3d
-moviepy
+moviepy==1.0.3
 supervision==0.21.0
+
+# Ensure compatible versions with numpy 1.24.4
+opencv-python-headless==4.8.1.78
+scipy==1.13.1
