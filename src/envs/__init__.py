@@ -90,3 +90,23 @@ def construct_envs(args):
         env = InstanceImageGoal_Env(args=args)
 
         return env
+
+    elif args.environment == 'tiamat':
+        # Import Tiamat components from agent_communicator package
+        try:
+            from agent_communicator.ros.tiamat_ros_env import TiamatRosEnv
+            from agent_communicator.interface.tiamat_unigoal_interface import TiamatUniGoalInterface
+            from agent_communicator.envs.tiamat_unigoal_env import TiamatUniGoalEnv
+        except ImportError:
+            raise ImportError(
+                "Tiamat environment requires the agent_communicator package. "
+                "Please install it from the contrl repository."
+            )
+
+        # Create Tiamat environment chain
+        ros_env = TiamatRosEnv(None)
+        interface = TiamatUniGoalInterface(ros_env)
+        env = TiamatUniGoalEnv(args)
+        env.set_interface(interface)
+
+        return env
