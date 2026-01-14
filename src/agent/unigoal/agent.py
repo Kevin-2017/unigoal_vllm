@@ -42,7 +42,14 @@ class UniGoal_Agent():
 
 
         self.sem_pred = SemanticPredMaskRCNN(args)
-        self.llm = LLM(self.args.base_url, self.args.api_key, self.args.llm_model)
+        self.llm = LLM(
+            self.args.base_url, 
+            self.args.api_key, 
+            self.args.llm_model,
+            log_dir=getattr(self.args, 'log_dir', None),
+            use_wandb=getattr(self.args, 'use_wandb', False),
+            wandb_run=getattr(self.args, 'wandb_run', None)
+        )
 
         self.selem = skimage.morphology.disk(3)
 
@@ -692,17 +699,48 @@ class UniGoal_Agent():
             return None
         elif self.args.goal_type == 'text':
             for i in range(10):
-                if isinstance(self.text_goal, dict) and 'intrinsic_attributes' in self.text_goal:  
+                if isinstance(self.text_goal, dict) and 'intrinsic_attributes' in self.text_goal:
                     text_goal = self.text_goal['intrinsic_attributes']
                 else:
                     text_goal = self.text_goal
                 text_goal_id = self.llm(self.prompt_text2object.replace('{text}', text_goal))
+
+                # Log the raw response for debugging
+                if i == 0:
+                    print(f"[DEBUG] LLM raw response for text '{text_goal}': {text_goal_id}")
+
                 try:
-                    text_goal_id = re.findall(r'\d+', text_goal_id)[0]
-                    text_goal_id = int(text_goal_id)
+                    # Handle thinking model outputs - extract content after thinking tags
+                    cleaned_response = text_goal_id
+
+                    # Remove common thinking wrapper tags
+                    if '</think>' in cleaned_response:
+                        cleaned_response = cleaned_response.split('</think>')[-1]
+                    if '<think>' in cleaned_response and '</think>' not in text_goal_id:
+                        # Unclosed think tag, take content after it
+                        cleaned_response = cleaned_response.split('<think>')[-1]
+
+                    # Try to find a standalone number (not part of a word)
+                    # Look for numbers at the end of the response first (most likely to be the answer)
+                    numbers = re.findall(r'\b\d+\b', cleaned_response.strip())
+                    if numbers:
+                        # Take the last number found (most likely the final answer)
+                        text_goal_id = int(numbers[-1])
+                    else:
+                        # Fallback to finding any digit
+                        all_digits = re.findall(r'\d+', cleaned_response)
+                        if all_digits:
+                            text_goal_id = int(all_digits[-1])
+                        else:
+                            continue
+
                     if 0 <= text_goal_id < 6:
+                        if i == 0:
+                            print(f"[DEBUG] Extracted category ID: {text_goal_id}")
                         return text_goal_id
-                except:
+                except Exception as e:
+                    if i == 0:
+                        print(f"[DEBUG] Failed to parse response: {e}")
                     pass
             return 0
 

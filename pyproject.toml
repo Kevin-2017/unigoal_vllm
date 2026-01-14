@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unigoal"
+version = "0.1.0"
+description = "UniGoal: Towards Universal Zero-shot Goal-oriented Navigation"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Hang Yin"},
+    {name = "Xiuwei Xu"},
+    {name = "Linqing Zhao"},
+    {name = "Ziwei Wang"},
+    {name = "Jie Zhou"},
+    {name = "Jiwen Lu"},
+]
+keywords = ["navigation", "robotics", "vision", "deep-learning", "zero-shot"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "numpy==1.24.4",
+    "omegaconf",
+    "hydra-core",
+    "gym==0.26.2",
+    "scikit-image",
+    "scikit-fmm",
+    "scikit-learn",
+    "pslpython",
+    "openai",
+    "grakel",
+    "open3d",
+    "moviepy==1.0.3",
+    "supervision==0.21.0",
+    "opencv-python-headless==4.8.1.78",
+    "scipy==1.13.1",
+    "icecream",
+    "torch",
+    "torchvision",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://bagh2178.github.io/UniGoal/"
+Repository = "https://github.com/bagh2178/UniGoal"
+Paper = "https://arxiv.org/abs/2503.10630"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["unigoal*", "src*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.json"]
