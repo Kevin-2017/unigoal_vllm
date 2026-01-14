@@ -1,0 +1,65 @@
+# ObjectNav Configuration (based on SG-Nav approach)
+seed: 1
+total_num_scenes: 36
+num_processes: 1
+num_eval_episodes: 1000
+cuda: true
+sim_gpu_id: 0
+log_interval: 10
+save_interval: 1
+dump_location: "./outputs/experiments_objectnav/"
+experiment_id: "experiment_objectnav"
+save_periodic: 50000
+visualize: 1
+environment: "habitat"
+env_frame_width: 640
+env_frame_height: 480
+frame_width: 160
+frame_height: 120
+max_episode_length: 500
+task_config: "tasks/objectnav.yaml"
+split: "val"
+camera_height: 0.88
+hfov: 79
+turn_angle: 30
+min_depth: 0.5
+max_depth: 5.0
+success_dist: 0.2  # ObjectNav standard is 0.2m
+floor_thr: 50
+min_d: 0.5
+max_d: 5.0
+version: "v3"
+
+# ObjectNav specific settings
+distance_threshold: 5.0  # Distance to classify as "found_goal" vs "found_possible_goal"
+goal_merge_threshold: 0.8  # Threshold for merging goal detections
+obj_min_detections: 3  # Minimum detections before confirming goal
+panoramic_steps: 22  # Initial panoramic sweep steps
+
+# Detection model settings
+use_glip: true  # Use GLIP for object detection instead of MaskRCNN
+glip_config: "GLIP/configs/pretrain/glip_Swin_L.yaml"
+glip_weights: "GLIP/MODEL/glip_large_model.pth"
+glip_confidence: 0.61
+
+# map
+num_sem_categories: 16
+map_size_cm: 4000
+map_resolution: 5
+global_downscaling: 3
+vision_range: 100
+
+# LLM and VLM (for scene graph reasoning)
+llm_model: "Qwen/Qwen3-VL-4B-Thinking"
+vlm_model: "Qwen/Qwen3-VL-4B-Thinking"
+api_key: "EMPTY"
+base_url: "http://localhost:8007/v1"
+
+# Weights & Biases logging
+use_wandb: true
+wandb_project: "unigoal-objectnav"
+
+# Co-occurrence matrices (optional - can use pre-trained from SG-Nav)
+use_cooccurrence: true
+obj_cooccur_matrix: "tools/obj.npy"
+room_cooccur_matrix: "tools/room.npy"
