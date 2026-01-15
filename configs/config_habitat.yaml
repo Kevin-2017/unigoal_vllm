@@ -83,10 +83,19 @@ map_resolution: 5
 # base_url: "http://localhost:8000/v1/"
 
 # vLLM qwen 3 Vision (quantized FP8)
-llm_model: "Qwen/Qwen3-VL-8B-Instruct-FP8"
-vlm_model: "Qwen/Qwen3-VL-8B-Instruct-FP8"
+# llm_model: "Qwen/Qwen3-VL-8B-Instruct-FP8"
+# vlm_model: "Qwen/Qwen3-VL-8B-Instruct-FP8"
+# api_key: "EMPTY"       
+# base_url: "http://localhost:8001/v1"
+
+
+# vLLM qwen 3 Vision (quantized FP8)
+llm_model: "workspace/models/Qwen3-VL-8B-Instruct-FP8"
+vlm_model: "workspace/models/Qwen3-VL-8B-Instruct-FP8"
 api_key: "EMPTY"       
 base_url: "http://localhost:8001/v1"
+
+
 
 # vLLM qwen 3 Vision (quantized 30b FP8)
 # llm_model: "Qwen/Qwen3-VL-30B-A3B-Instruct-FP8"
